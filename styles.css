@@ -42,7 +42,7 @@ html {
     font-size: larger;
 }
 
-/* Buttons */
+/* Buttons */  TODO reDesign buttons
 .button, 
 .infoButton {
     color: var(--color-primary);
