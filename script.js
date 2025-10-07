@@ -1,56 +1,83 @@
-const galleryImages = document.querySelectorAll('.gallery-grid img');
-const overlay = document.getElementById('overlay');
-const focusedImage = document.getElementById('focusedImage');
-const closeBtn = document.getElementById('close');
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
+// DOM Elements
+const elements = {
+  galleryImages: document.querySelectorAll('.gallery-grid img'),
+  overlay: document.getElementById('overlay'),
+  focusedImage: document.getElementById('focusedImage'),
+  closeBtn: document.getElementById('close'),
+  prevBtn: document.getElementById('prev'),
+  nextBtn: document.getElementById('next'),
+  loadingBanner: document.getElementById('loadingBanner'),
+  galleryBtn: document.querySelector('.button'),
+  infoBtn: document.querySelector('.infoButton'),
+  gallery: document.getElementById('gallery'),
+  infoBox: document.getElementById('info-box')
+};
 
+// State
 let currentIndex = 0;
 
+// Image Gallery Functions
 function showImage(index) {
   currentIndex = index;
-  focusedImage.style.opacity = 0;
+  elements.focusedImage.style.opacity = 0;
+  
   setTimeout(() => {
-    focusedImage.src = galleryImages[currentIndex].src;
-    focusedImage.alt = galleryImages[currentIndex].alt;
-    focusedImage.style.opacity = 1;
+    elements.focusedImage.src = elements.galleryImages[currentIndex].src;
+    elements.focusedImage.alt = elements.galleryImages[currentIndex].alt;
+    elements.focusedImage.style.opacity = 1;
   }, 200);
 }
 
-galleryImages.forEach((img, i) => {
-  img.addEventListener('click', () => {
-    showImage(i);
-    overlay.classList.remove('hidden');
+function nextImage() {
+  const newIndex = (currentIndex === elements.galleryImages.length - 1) ? 0 : currentIndex + 1;
+  showImage(newIndex);
+}
+
+function previousImage() {
+  const newIndex = (currentIndex === 0) ? elements.galleryImages.length - 1 : currentIndex - 1;
+  showImage(newIndex);
+}
+
+function closeOverlay() {
+  elements.overlay.classList.add('hidden');
+}
+
+function hideBanner() {
+  elements.loadingBanner.classList.add('fadeOut');
+  setTimeout(() => {
+    elements.loadingBanner.style.display = 'none';
+  }, 500);
+}
+
+function smoothScroll(element) {
+  element.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Event Listeners
+function initializeEventListeners() {
+  // Gallery image clicks
+  elements.galleryImages.forEach((img, i) => {
+    img.addEventListener('click', () => {
+      showImage(i);
+      elements.overlay.classList.remove('hidden');
+    });
   });
-});
 
-closeBtn.addEventListener('click', () => {
-  overlay.classList.add('hidden');
-});
+  // Overlay controls
+  elements.closeBtn.addEventListener('click', closeOverlay);
+  elements.prevBtn.addEventListener('click', previousImage);
+  elements.nextBtn.addEventListener('click', nextImage);
+  elements.overlay.addEventListener('click', (e) => {
+    if (e.target === elements.overlay) closeOverlay();
+  });
 
-prevBtn.addEventListener('click', () => {
-  const newIndex = (currentIndex === 0) ? galleryImages.length - 1 : currentIndex - 1;
-  showImage(newIndex);
-});
+  // Navigation buttons
+  elements.galleryBtn.addEventListener('click', () => smoothScroll(elements.gallery));
+  elements.infoBtn.addEventListener('click', () => smoothScroll(elements.infoBox));
 
-nextBtn.addEventListener('click', () => {
-  const newIndex = (currentIndex === galleryImages.length - 1) ? 0 : currentIndex + 1;
-  showImage(newIndex);
-});
+  // Loading banner
+  window.addEventListener('load', hideBanner);
+}
 
-overlay.addEventListener('click', (e) => {
-  if (e.target === overlay) {
-    overlay.classList.add('hidden');
-  }
-});
-
-window.addEventListener('load', function() {
-  const banner = document.getElementById('loadingBanner');
-  banner.classList.add('fadeOut');
-  setTimeout(() => { banner.style.display = 'none'; }, 500);
-});
-
-document.querySelector('.button').addEventListener('click', () => {
-  const gallery = document.getElementById('gallery');
-  gallery.scrollIntoView({ behavior: 'smooth' });
-});
+// Initialize application
+initializeEventListeners();
