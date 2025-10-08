@@ -43,8 +43,7 @@ html {
 }
 
 /* Buttons  TODO reDesign buttons */
-.button,
-.infoButton {
+.button {
     color: var(--color-primary);
     font-family: Metamophous;
     font-size: 16px;
@@ -57,17 +56,11 @@ html {
     transition: var(--transition-default);
 }
 
-.infoButton {
-    margin-left: 10px;
-}
-
-.button:hover,
-.infoButton:hover {
+.button:hover {
     border-radius: 10px;
 }
 
-.button:active,
-.infoButton:active {
+.button:active {
     background-color: var(--color-accent);
 }
 

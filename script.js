@@ -105,7 +105,6 @@ function initializeEventListeners() {
 
     // Navigation buttons
     elements.galleryBtn.addEventListener('click', () => smoothScroll(elements.gallery));
-    elements.infoBtn.addEventListener('click', () => smoothScroll(elements.infoBox));
 }
 
 // Initialize application
