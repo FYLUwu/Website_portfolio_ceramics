@@ -96,9 +96,16 @@ function initializeEventListeners() {
         });
     });
 
-    // Close on click anywhere in overlay
-    elements.overlay.addEventListener('click', () => {
-        elements.overlay.classList.add('hidden');
+    // Handle both click and touch events for overlay
+    elements.overlay.addEventListener('click', closeOverlay);
+    elements.overlay.addEventListener('touchend', (e) => {
+        e.preventDefault(); // Prevent default touch behavior
+        closeOverlay();
+    });
+
+     // Prevent image drag on mobile
+    elements.focusedImage.addEventListener('touchmove', (e) => {
+        e.preventDefault();
     });
 
     // Overlay controls
@@ -111,6 +118,10 @@ function initializeEventListeners() {
 
     // Navigation buttons
     elements.galleryBtn.addEventListener('click', () => smoothScroll(elements.gallery));
+}
+
+function closeOverlay() {
+    elements.overlay.classList.add('hidden');
 }
 
 // Initialize application
