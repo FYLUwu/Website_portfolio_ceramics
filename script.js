@@ -90,9 +90,15 @@ function initializeEventListeners() {
     // Gallery image clicks
     elements.galleryImages.forEach((img, i) => {
         img.addEventListener('click', () => {
-            showImage(i);
+            elements.focusedImage.src = img.src;
+            elements.focusedImage.alt = img.alt;
             elements.overlay.classList.remove('hidden');
         });
+    });
+
+    // Close on click anywhere in overlay
+    elements.overlay.addEventListener('click', () => {
+        elements.overlay.classList.add('hidden');
     });
 
     // Overlay controls
