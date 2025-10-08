@@ -3,10 +3,6 @@ const elements = {
     galleryImages: document.querySelectorAll('.gallery-grid img'),
     overlay: document.getElementById('overlay'),
     focusedImage: document.getElementById('focusedImage'),
-    closeBtn: document.getElementById('close'),
-    prevBtn: document.getElementById('prev'),
-    nextBtn: document.getElementById('next'),
-    loadingBanner: document.getElementById('loadingBanner'),
     galleryBtn: document.querySelector('.button'),
     infoBtn: document.querySelector('.infoButton'),
     gallery: document.getElementById('gallery'),
@@ -33,31 +29,6 @@ function checkCode() {
     }
 }
 
-// State
-let currentIndex = 0;
-
-// Image Gallery Functions
-function showImage(index) {
-    currentIndex = index;
-    elements.focusedImage.style.opacity = 0;
-
-    setTimeout(() => {
-        elements.focusedImage.src = elements.galleryImages[currentIndex].src;
-        elements.focusedImage.alt = elements.galleryImages[currentIndex].alt;
-        elements.focusedImage.style.opacity = 1;
-    }, 200);
-}
-
-function nextImage() {
-    const newIndex = (currentIndex === elements.galleryImages.length - 1) ? 0 : currentIndex + 1;
-    showImage(newIndex);
-}
-
-function previousImage() {
-    const newIndex = (currentIndex === 0) ? elements.galleryImages.length - 1 : currentIndex - 1;
-    showImage(newIndex);
-}
-
 function closeOverlay() {
     elements.overlay.classList.add('hidden');
 }
@@ -73,12 +44,6 @@ function initializeEventListeners() {
         elements.accessOverlay.classList.add('hidden');
     }
 
-    // Remove any existing loading banner
-    const loadingBanner = document.getElementById('loadingBanner');
-    if (loadingBanner) {
-        loadingBanner.remove();
-    }
-
     // Access code input events
     elements.accessCode.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
@@ -88,7 +53,7 @@ function initializeEventListeners() {
     });
 
     // Gallery image clicks
-    elements.galleryImages.forEach((img, i) => {
+    elements.galleryImages.forEach((img) => {
         img.addEventListener('click', () => {
             elements.focusedImage.src = img.src;
             elements.focusedImage.alt = img.alt;
@@ -96,29 +61,21 @@ function initializeEventListeners() {
         });
     });
 
-    // Handle both click and touch events for overlay
+    // Handle overlay closing
     elements.overlay.addEventListener('click', closeOverlay);
     elements.overlay.addEventListener('touchend', (e) => {
-        e.preventDefault(); // Prevent default touch behavior
+        e.preventDefault();
         closeOverlay();
     });
 
-     // Prevent image drag on mobile
+    // Prevent image drag on mobile
     elements.focusedImage.addEventListener('touchmove', (e) => {
         e.preventDefault();
     });
 
-    // Overlay controls
-    elements.overlay.addEventListener('click', (e) => {
-        if (e.target === elements.overlay) closeOverlay();
-    });
-
     // Navigation buttons
     elements.galleryBtn.addEventListener('click', () => smoothScroll(elements.gallery));
-}
-
-function closeOverlay() {
-    elements.overlay.classList.add('hidden');
+    elements.infoBtn?.addEventListener('click', () => smoothScroll(elements.infoBox));
 }
 
 // Initialize application
