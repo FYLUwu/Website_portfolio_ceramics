@@ -21,8 +21,8 @@ html {
 
 /* Hero Section */
 .hero-image {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), 
-                      url("/resources/pexels-liuuu-_61-2383408-30321918.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)),
+        url("/resources/pexels-liuuu-_61-2383408-30321918.jpg");
     border: none;
     outline: none;
     height: 100%;
@@ -43,7 +43,7 @@ html {
 }
 
 /* Buttons  TODO reDesign buttons */
-.button, 
+.button,
 .infoButton {
     color: var(--color-primary);
     font-family: Metamophous;
@@ -61,12 +61,12 @@ html {
     margin-left: 10px;
 }
 
-.button:hover, 
+.button:hover,
 .infoButton:hover {
     border-radius: 10px;
 }
 
-.button:active, 
+.button:active,
 .infoButton:active {
     background-color: var(--color-accent);
 }
@@ -255,4 +255,46 @@ html {
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #182939;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#access-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#access-box input {
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#access-box button {
+    padding: 10px 20px;
+    background-color: #182939;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#content {
+    display: none;
 }
