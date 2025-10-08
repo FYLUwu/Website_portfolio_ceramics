@@ -109,9 +109,6 @@ function initializeEventListeners() {
     });
 
     // Overlay controls
-    elements.closeBtn.addEventListener('click', closeOverlay);
-    elements.prevBtn.addEventListener('click', previousImage);
-    elements.nextBtn.addEventListener('click', nextImage);
     elements.overlay.addEventListener('click', (e) => {
         if (e.target === elements.overlay) closeOverlay();
     });
