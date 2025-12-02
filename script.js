@@ -37,11 +37,35 @@ function smoothScroll(element) {
     element.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Event Listeners
 function initializeEventListeners() {
     // Check if already authenticated
     if (sessionStorage.getItem('authenticated') === 'true') {
         elements.accessOverlay.classList.add('hidden');
+    }
+
+    // Nav link smooth scroll (delegated)
+    elements.mainNav?.addEventListener('click', (e) => {
+        const a = e.target.closest('a[data-target]');
+        if (!a) return;
+        e.preventDefault();
+        const id = a.getAttribute('data-target');
+        const el = document.getElementById(id);
+        if (el) smoothScroll(el);
+    });
+
+    // Minimal, efficient scroll handler to toggle compact nav
+    if (elements.mainNav) {
+        let ticking = false;
+        const threshold = 60;
+        window.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                if (window.scrollY > threshold) elements.mainNav.classList.add('scrolled');
+                else elements.mainNav.classList.remove('scrolled');
+                ticking = false;
+            });
+        }, { passive: true });
     }
 
     // Access code input events
