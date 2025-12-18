@@ -19,48 +19,6 @@ html {
     --border-radius: 8px;
 }
 
-/* Sticky navbar */
-.main-nav{
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 14px 20px;
-  background: rgba(255,255,255,0.70); /* adjust to match site */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: padding 220ms ease, box-shadow 220ms ease, transform 220ms ease;
-  will-change: transform, box-shadow;
-}
-
-/* compact style after scrolling */
-.main-nav.scrolled{
-  padding: 8px 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-}
-
-/* simple brand / links */
-.main-nav .brand{
-  font-weight: 600;
-  font-size: 1rem;
-}
-.main-nav .nav-links a{
-  color: inherit;
-  text-decoration: none;
-  margin-left: 12px;
-  font-size: 0.95rem;
-  padding: 6px 8px;
-  border-radius: 6px;
-  transition: background-color 160ms;
-}
-.main-nav .nav-links a:hover,
-.main-nav .nav-links a:focus{
-  background: rgba(0,0,0,0.04);
-}
-
 /* small screens: keep compact, allow hamburger later */
 @media (max-width: 640px){
   .main-nav{ padding: 10px 12px; }
