@@ -28,7 +28,7 @@ html {
 /* Hero Section */
 .hero-image {
     background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)),
-        url("resources/pexels-liuuu-_61-2383408-30321918.jpg");
+        url("resources/Keramik_11.24-3.jpg");
     border: none;
     outline: none;
     height: 100%;
@@ -53,8 +53,9 @@ html {
     color: var(--color-primary);
     font-family: Metamophous;
     font-size: 16px;
+    font-weight: bold;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: 0px 10px 0px 10px;
     outline: none;
     padding: 10px 16px;
     background-color: var(--color-secondary);
