@@ -48,6 +48,12 @@ html {
     display: none !important;
 }
 
+/* Show focus outlines only for keyboard users; hide for mouse/touch/programmatic focus */
+:focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 /* ============================================
    BUTTON COMPONENT
    ============================================ */
@@ -73,6 +79,10 @@ html {
 }
 
 .button:focus {
+    outline: none;
+}
+
+.button:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
 }
@@ -124,6 +134,10 @@ html {
 }
 
 .hamburger:focus {
+    outline: none;
+}
+
+.hamburger:focus-visible {
     outline: 2px solid var(--color-secondary);
     border-radius: 6px;
 }
@@ -235,6 +249,10 @@ html {
 }
 
 .gallery-grid img:focus {
+    outline: none;
+}
+
+.gallery-grid img:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
 }
@@ -326,6 +344,10 @@ html {
 }
 
 .social-link:focus {
+    outline: none;
+}
+
+.social-link:focus-visible {
     outline: 2px solid var(--color-secondary);
     border-radius: 4px;
     padding: 4px;
@@ -383,6 +405,10 @@ html {
 }
 
 .access-box__input:focus {
+    outline: none;
+}
+
+.access-box__input:focus-visible {
     outline: 2px solid var(--color-accent);
     border-color: var(--color-accent);
 }
@@ -503,6 +529,10 @@ html {
 }
 
 .menu-close:focus {
+    outline: none;
+}
+
+.menu-close:focus-visible {
     outline: 2px solid white;
     border-radius: 4px;
 }
