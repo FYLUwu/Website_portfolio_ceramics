@@ -123,6 +123,9 @@ function openMenu() {
     if (elementExists(DOM.menuClose)) {
         DOM.menuClose.focus();
     }
+    // ensure menu-panel is positioned relative to the visible viewport (mobile browsers)
+    positionMenuPanelToViewport();
+    attachViewportHandlers();
 }
 
 function closeMenu() {
@@ -139,6 +142,8 @@ function closeMenu() {
     }
 
     document.body.style.overflow = '';
+    // detach handlers when menu is closed
+    detachViewportHandlers();
 }
 
 function toggleMenu() {
@@ -284,4 +289,69 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
     initializeApp();
+}
+
+/* ============================================
+   VISUAL VIEWPORT HELPERS (keep bottom sheet glued)
+   ============================================ */
+let _viewportHandlersAttached = false;
+
+function positionMenuPanelToViewport() {
+    const panel = document.querySelector('.menu-panel');
+    if (!panel) return;
+
+    // Only apply special positioning on narrow screens (phone behavior)
+    const isPhone = window.matchMedia && window.matchMedia('(max-width:420px)').matches;
+    if (!isPhone) {
+        // Reset to default CSS behavior
+        panel.style.top = '';
+        panel.style.bottom = '';
+        return;
+    }
+
+    const vv = window.visualViewport;
+    // If visualViewport is not supported, rely on window.innerHeight
+    const vvHeight = vv ? vv.height : window.innerHeight;
+    const vvOffsetTop = vv ? vv.offsetTop : 0;
+
+    // compute top so that panel bottom aligns with visible viewport bottom
+    const panelHeight = panel.offsetHeight || Math.min(400, vvHeight * 0.6);
+    const top = Math.round(vvOffsetTop + vvHeight - panelHeight);
+
+    // pin panel using fixed positioning relative to layout viewport
+    panel.style.position = 'fixed';
+    panel.style.left = '0';
+    panel.style.right = '0';
+    panel.style.top = top + 'px';
+    panel.style.bottom = 'auto';
+    panel.style.transform = 'translateY(0)';
+    panel.style.opacity = '1';
+}
+
+function _onVisualViewportChange() {
+    // reposition when the visual viewport changes (scroll/resize)
+    positionMenuPanelToViewport();
+}
+
+function attachViewportHandlers() {
+    if (_viewportHandlersAttached) return;
+    _viewportHandlersAttached = true;
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', _onVisualViewportChange);
+        window.visualViewport.addEventListener('scroll', _onVisualViewportChange);
+    }
+    // fallback
+    window.addEventListener('resize', _onVisualViewportChange);
+    window.addEventListener('orientationchange', _onVisualViewportChange);
+}
+
+function detachViewportHandlers() {
+    if (!_viewportHandlersAttached) return;
+    _viewportHandlersAttached = false;
+    if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', _onVisualViewportChange);
+        window.visualViewport.removeEventListener('scroll', _onVisualViewportChange);
+    }
+    window.removeEventListener('resize', _onVisualViewportChange);
+    window.removeEventListener('orientationchange', _onVisualViewportChange);
 }
