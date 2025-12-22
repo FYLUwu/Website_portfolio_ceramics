@@ -57,6 +57,32 @@ function elementExists(element) {
 }
 
 /* ============================================
+   SCROLL LOCK (handles nested overlays)
+   ============================================ */
+let _scrollBlockCount = 0;
+function _blockTouch(e) {
+    e.preventDefault();
+}
+function disableBodyScroll() {
+    if (_scrollBlockCount === 0) {
+        try {
+            document.body.style.overflow = 'hidden';
+        } catch (err) {}
+        document.addEventListener('touchmove', _blockTouch, { passive: false });
+    }
+    _scrollBlockCount++;
+}
+function enableBodyScroll() {
+    _scrollBlockCount = Math.max(0, _scrollBlockCount - 1);
+    if (_scrollBlockCount === 0) {
+        try {
+            document.body.style.overflow = '';
+        } catch (err) {}
+        document.removeEventListener('touchmove', _blockTouch);
+    }
+}
+
+/* ============================================
    GALLERY LIGHTBOX
    ============================================ */
 
@@ -66,14 +92,14 @@ function openImageLightbox(imageSrc, imageAlt) {
     DOM.overlayImage.src = imageSrc;
     DOM.overlayImage.alt = imageAlt;
     DOM.imageOverlay.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+    disableBodyScroll();
 }
 
 function closeImageLightbox() {
     if (!elementExists(DOM.imageOverlay)) return;
 
     DOM.imageOverlay.classList.add('hidden');
-    document.body.style.overflow = '';
+    enableBodyScroll();
 }
 
 function initializeGallery() {
@@ -118,7 +144,7 @@ function openMenu() {
         DOM.menuToggle.classList.add('is-open');
     }
 
-    document.body.style.overflow = 'hidden';
+    disableBodyScroll();
 
     if (elementExists(DOM.menuClose)) {
         DOM.menuClose.focus();
@@ -144,7 +170,7 @@ function closeMenu() {
         DOM.menuToggle.focus();
     }
 
-    document.body.style.overflow = '';
+    enableBodyScroll();
     // detach handlers when menu is closed
     detachViewportHandlers();
     deactivateFocusTrap();
