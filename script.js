@@ -126,6 +126,7 @@ function openMenu() {
     // ensure menu-panel is positioned relative to the visible viewport (mobile browsers)
     positionMenuPanelToViewport();
     attachViewportHandlers();
+    activateFocusTrap();
 }
 
 function closeMenu() {
@@ -144,6 +145,7 @@ function closeMenu() {
     document.body.style.overflow = '';
     // detach handlers when menu is closed
     detachViewportHandlers();
+    deactivateFocusTrap();
 }
 
 function toggleMenu() {
@@ -369,4 +371,77 @@ function detachViewportHandlers() {
     }
     window.removeEventListener('resize', _onVisualViewportChange);
     window.removeEventListener('orientationchange', _onVisualViewportChange);
+}
+
+/* ============================================
+   FOCUS TRAP (accessibility for overlays)
+   ============================================ */
+let _previouslyFocused = null;
+let _focusableElements = [];
+let _focusTrapListener = null;
+
+function _getFocusable(container) {
+    if (!container) return [];
+    return Array.from(
+        container.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])')
+    ).filter((el) => el.offsetParent !== null);
+}
+
+function _onTrapKey(e) {
+    if (e.key !== 'Tab') return;
+    const first = _focusableElements[0];
+    const last = _focusableElements[_focusableElements.length - 1];
+    if (!first || !last) return;
+
+    if (e.shiftKey) {
+        if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        }
+    } else {
+        if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    }
+}
+
+function activateFocusTrap() {
+    const panel = document.querySelector('.menu-panel');
+    if (!panel) return;
+    _previouslyFocused = document.activeElement;
+    _focusableElements = _getFocusable(panel);
+    if (_focusableElements.length) _focusableElements[0].focus();
+    _focusTrapListener = _onTrapKey;
+    document.addEventListener('keydown', _focusTrapListener);
+
+    // prevent touchmove on the overlay background but allow scrolling inside panel
+    if (DOM.menuOverlay) {
+        DOM.menuOverlay.addEventListener('touchmove', _menuOverlayTouchMove, { passive: false });
+    }
+}
+
+function deactivateFocusTrap() {
+    if (_focusTrapListener) {
+        document.removeEventListener('keydown', _focusTrapListener);
+        _focusTrapListener = null;
+    }
+    if (_previouslyFocused && typeof _previouslyFocused.focus === 'function') {
+        _previouslyFocused.focus();
+    }
+    // remove overlay touchmove handler
+    if (DOM.menuOverlay) {
+        DOM.menuOverlay.removeEventListener('touchmove', _menuOverlayTouchMove);
+    }
+}
+
+function _menuOverlayTouchMove(e) {
+    // allow touchmove if the event happened inside the scrollable panel
+    const panel = document.querySelector('.menu-panel');
+    if (panel && e.target && e.target instanceof Element && e.target.closest('.menu-panel')) {
+        // allow; do not prevent
+        return;
+    }
+    // otherwise prevent background scroll
+    e.preventDefault();
 }

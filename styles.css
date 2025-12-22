@@ -435,6 +435,33 @@ html {
 }
 
 .menu-close {
+    /* Improve touch behavior & accessibility on mobile */
+    .menu-panel {
+        /* smooth scrolling inside the panel */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        max-height: calc(100vh - 56px);
+    }
+
+    .menu-link {
+        /* larger tap target */
+        padding: 12px 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .button, .menu-close, .menu-link, .social-link {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+    }
+
+    /* Prevent background overscroll when overlays are open */
+    .menu-overlay, .image-overlay, .access-overlay {
+        overscroll-behavior: contain;
+    }
+
+    /* Ensure minimum touch target size */
+    .button { min-height: 44px; padding-top: 8px; padding-bottom: 8px; }
     position: absolute;
     right: var(--spacing-sm);
     top: var(--spacing-sm);
