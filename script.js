@@ -124,6 +124,8 @@ function openMenu() {
         DOM.menuClose.focus();
     }
     // ensure menu-panel is positioned relative to the visible viewport (mobile browsers)
+    // update CSS vh variable first so CSS-based sizes match the visible viewport
+    if (typeof updateVh === 'function') updateVh();
     positionMenuPanelToViewport();
     attachViewportHandlers();
     activateFocusTrap();
@@ -284,6 +286,8 @@ function initializeApp() {
     initializeMenu();
     initializeAccessControl();
     initializeNavigation();
+    // set initial --vh so CSS using var(--vh) is correct on mobile
+    if (typeof updateVh === 'function') updateVh();
 }
 
 // Initialize when DOM is ready
@@ -297,6 +301,21 @@ if (document.readyState === 'loading') {
    VISUAL VIEWPORT HELPERS (keep bottom sheet glued)
    ============================================ */
 let _viewportHandlersAttached = false;
+let _vhUpdateTimer = null;
+
+function updateVh() {
+    const vv = window.visualViewport;
+    const height = vv ? vv.height : window.innerHeight;
+    const vh = (height * 0.01);
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+}
+
+function updateVhDebounced() {
+    if (_vhUpdateTimer) clearTimeout(_vhUpdateTimer);
+    _vhUpdateTimer = setTimeout(() => {
+        updateVh();
+    }, 60);
+}
 
 function positionMenuPanelToViewport() {
     const panel = document.querySelector('.menu-panel');
@@ -346,7 +365,13 @@ function positionMenuPanelToViewport() {
 }
 
 function _onVisualViewportChange() {
-    // reposition when the visual viewport changes (scroll/resize)
+    // update CSS vh and reposition when the visual viewport changes (scroll/resize)
+    if (window.visualViewport) {
+        updateVhDebounced();
+    } else {
+        // fallback immediate update
+        updateVh();
+    }
     positionMenuPanelToViewport();
 }
 
@@ -360,6 +385,8 @@ function attachViewportHandlers() {
     // fallback
     window.addEventListener('resize', _onVisualViewportChange);
     window.addEventListener('orientationchange', _onVisualViewportChange);
+    // ensure CSS var is initialized when handlers attach
+    updateVh();
 }
 
 function detachViewportHandlers() {
