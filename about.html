@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="Lini Ceramics - Handcrafted pottery and ceramic art">
-    <title>Lini Ceramics Portfolio</title>
+    <meta name="description" content="About Lini Ceramics - Learn about the artist and her work">
+    <title>About - Lini Ceramics Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Metamophous&display=swap">
 </head>
@@ -17,33 +17,27 @@
         </button>
     </header>
 
-    <!-- ======================= HERO SECTION ======================= -->
-    <section class="hero">
-        <!-- <div class="hero__content">
-            <h1>I am Lini</h1>
-            <p>And I'm a Pottery Artist</p>
-            <button class="button button--primary" id="gallery-btn">Gallery</button>
-        </div> -->
+    <!-- ======================= ABOUT HERO SECTION ======================= -->
+    <section class="hero hero--about">
+        <div class="hero__content">
+            <h1>About Me</h1>
+            <p>Lini Ceramics - Where tradition meets creativity</p>
+        </div>
     </section>
 
     <!-- ======================= MAIN CONTENT ======================= -->
     <main>
-        <!-- Gallery -->
-        <section id="gallery" class="gallery-section">
-            <h2>My Work</h2>
-            <div class="gallery-grid">
-                <img src="resources/DSC_5354.jpg" alt="Ceramic vase with natural glazing" loading="lazy">
-                <img src="resources/DSC_5375.jpg" alt="Handcrafted ceramic bowl" loading="lazy">
-                <img src="resources/DSC_5383.jpg" alt="Decorative pottery piece" loading="lazy">
-                <img src="resources/DSC_5395.jpg" alt="Modern ceramic sculpture" loading="lazy">
-                <img src="resources/Keramik_11.24-3.jpg" alt="Artistic ceramic vessel" loading="lazy">
+        <!-- About Section -->
+        <section id="about-content" class="info-section" aria-label="About Lini Ceramics">
+            <div class="info-section__content">
+                <h1>About My Craft</h1>
+                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+                <div class="info-section__cta">
+                    <a href="index.html#gallery" class="button button--primary" aria-label="View gallery">View Gallery</a>
+                </div>
             </div>
         </section>
-
-        <!-- Image Lightbox -->
-        <div id="image-overlay" class="image-overlay hidden" role="dialog" aria-label="Enlarged image view">
-            <img id="overlay-image" src="" alt="Enlarged view" class="image-overlay__image">
-        </div>
     </main>
 
     <!-- ======================= FOOTER ======================= -->
@@ -88,7 +82,7 @@
         <nav class="menu-panel" role="navigation" aria-label="Main navigation">
             <button id="menu-close" class="menu-close" aria-label="Menu schließen">×</button>
             <ul class="menu-list">
-                <li><a href="#gallery" class="menu-link">
+                <li><a href="index.html#gallery" class="menu-link">
                     <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zM13 3v18h8V3h-8z"/></svg>
                     Gallery
                 </a></li>

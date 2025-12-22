@@ -112,6 +112,24 @@ html {
     color: var(--color-secondary);
     user-select: none;
     font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: opacity var(--transition-default);
+}
+
+.topbar__brand:hover {
+    opacity: 0.85;
+}
+
+.topbar__brand:focus {
+    outline: none;
+}
+
+.topbar__brand:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
 }
 
 /* ============================================
@@ -213,6 +231,12 @@ html {
     margin: 0 0 var(--spacing-lg) 0;
 }
 
+.hero--about {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5));
+    background-color: rgba(14, 22, 17, 0.95);
+}
+
 
 /* ============================================
    GALLERY SECTION
@@ -242,6 +266,12 @@ html {
     aspect-ratio: 1;
     cursor: pointer;
     transition: transform var(--transition-default);
+    /* Prevent copying and selection */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    pointer-events: auto;
 }
 
 .gallery-grid img:hover {
@@ -279,6 +309,11 @@ html {
     object-fit: contain;
     transition: opacity 0.3s ease;
     cursor: pointer;
+    /* Prevent copying and selection */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 /* ============================================
@@ -303,9 +338,19 @@ html {
     margin-bottom: var(--spacing-sm);
 }
 
+.info-section h1 {
+    font-size: 2.2em;
+    margin-bottom: var(--spacing-md);
+}
+
 .info-section p {
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
+}
+
+.info-section__cta {
+    margin-top: var(--spacing-xl);
+    text-align: center;
 }
 
 /* ============================================

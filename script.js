@@ -18,7 +18,7 @@ const DOM = {
     menuOverlay: document.getElementById('menu-overlay'),
     menuClose: document.getElementById('menu-close'),
 
-    // Topbar brand (click to go to top)
+    // Topbar brand (now a semantic link)
     brand: document.querySelector('.topbar__brand'),
 
     // Navigation button
@@ -142,6 +142,36 @@ function initializeGallery() {
     if (elementExists(DOM.overlayImage)) {
         DOM.overlayImage.addEventListener('touchmove', (e) => {
             e.preventDefault();
+        });
+    }
+
+    // Prevent right-click (context menu) on all images
+    DOM.galleryImages.forEach((img) => {
+        img.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+    });
+
+    if (elementExists(DOM.overlayImage)) {
+        DOM.overlayImage.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+    }
+
+    // Prevent drag-and-drop on images
+    DOM.galleryImages.forEach((img) => {
+        img.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+    });
+
+    if (elementExists(DOM.overlayImage)) {
+        DOM.overlayImage.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+            return false;
         });
     }
 }
@@ -317,26 +347,6 @@ function initializeNavigation() {
     if (elementExists(DOM.galleryButton) && elementExists(DOM.gallerySection)) {
         DOM.galleryButton.addEventListener('click', () => {
             smoothScroll(DOM.gallerySection);
-        });
-    }
-
-    // Make topbar brand act as "go to top" (click and keyboard)
-    if (elementExists(DOM.brand)) {
-        // ensure it's keyboard focusable
-        if (!DOM.brand.hasAttribute('tabindex')) DOM.brand.setAttribute('tabindex', '0');
-        if (!DOM.brand.hasAttribute('role')) DOM.brand.setAttribute('role', 'button');
-        DOM.brand.style.cursor = 'pointer';
-
-        DOM.brand.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        DOM.brand.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
         });
     }
 }
