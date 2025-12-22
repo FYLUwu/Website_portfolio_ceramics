@@ -417,8 +417,10 @@ html {
 .menu-panel {
     width: 320px;
     max-width: 92vw;
-    /* Use dynamic viewport height to adapt when browser chrome shows/hides */
-    height: calc(var(--vh, 1vh) * 100);
+    /* Use dynamic viewport height to adapt when browser chrome shows/hides
+       but keep the panel non-scrollable by constraining max-height and hiding overflow */
+    height: auto;
+    max-height: calc(var(--vh, 1vh) * 100);
     padding: var(--spacing-xl) var(--spacing-lg);
     color: white;
     background: transparent;
@@ -429,13 +431,63 @@ html {
     transform: translateX(0%);
     opacity: 0;
     transition: transform var(--transition-menu), opacity 320ms ease;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
 }
 
 .menu-overlay.show .menu-panel {
     transform: translateX(0);
     opacity: 1;
+}
+
+/* Desktop: full-screen centered navigation (common portfolio style) */
+@media (min-width: 770px) {
+    .menu-overlay {
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0,0,0,0.92);
+    }
+
+    .menu-panel {
+        width: 100%;
+        max-width: 900px;
+        height: 100vh;
+        padding: calc(var(--spacing-xl) * 1.25);
+        border-radius: 0;
+        position: relative;
+        left: auto;
+        right: auto;
+        top: 0;
+        bottom: 0;
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(180deg, rgba(14,22,17,0.98), rgba(14,22,17,0.96));
+    }
+
+    .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .menu-link {
+        font-size: 2rem;
+        font-weight: 600;
+        padding: 8px 12px;
+        letter-spacing: 2px;
+    }
+
+    .menu-close {
+        position: absolute;
+        top: calc(var(--spacing-sm));
+        right: calc(var(--spacing-sm));
+        font-size: 2.4rem;
+    }
 }
 
 .menu-close {

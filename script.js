@@ -324,24 +324,15 @@ function positionMenuPanelToViewport() {
     // Only apply special positioning on narrow screens (phone behavior)
     const isPhone = window.matchMedia && window.matchMedia('(max-width:420px)').matches;
     if (!isPhone) {
-        // Anchor panel directly beneath the topbar so they glue together
-        const topbar = document.querySelector('.topbar');
-        if (topbar) {
-            const rect = topbar.getBoundingClientRect();
-            // rect.bottom is relative to layout viewport; use that for fixed positioning
-            panel.style.position = 'fixed';
-            panel.style.top = rect.bottom + 'px';
-            panel.style.left = 'auto';
-            panel.style.right = '0';
-            panel.style.bottom = 'auto';
-            panel.style.transform = 'translateY(0)';
-            panel.style.opacity = '1';
-        } else {
-            // Reset to default if no topbar
-            panel.style.top = '';
-            panel.style.bottom = '';
-            panel.style.position = '';
-        }
+        // On desktop/tablet prefer CSS-driven layout (full-screen centered overlay)
+        // Clear any inline positioning set previously so stylesheet controls appearance
+        panel.style.position = '';
+        panel.style.top = '';
+        panel.style.left = '';
+        panel.style.right = '';
+        panel.style.bottom = '';
+        panel.style.transform = '';
+        panel.style.opacity = '';
         return;
     }
 
