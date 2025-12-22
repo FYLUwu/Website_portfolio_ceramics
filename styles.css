@@ -514,6 +514,11 @@ html {
         right: calc(var(--spacing-sm));
         font-size: 2.4rem;
     }
+
+    /* On desktop the hamburger toggles to an X; hide the duplicate close button */
+    .menu-close {
+        display: none;
+    }
 }
 
 .menu-close {
@@ -526,6 +531,7 @@ html {
     font-size: 2rem;
     cursor: pointer;
     padding: var(--spacing-xs);
+    display: none; /* hidden globally per user request */
 }
 
 .menu-close:focus {
