@@ -90,7 +90,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9000;
+    /* Keep topbar above the menu so they visually glue together */
+    z-index: 2147483647;
     background: transparent;
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
@@ -119,7 +120,7 @@ html {
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 9001;
+    z-index: 2147483648;
 }
 
 .hamburger:focus {
@@ -247,8 +248,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Ensure image overlay is above fixed header on mobile */
-    z-index: 2147483647;
+    /* Ensure image overlay is above header/menu */
+    z-index: 2147483649;
     cursor: pointer;
 }
 
@@ -400,8 +401,8 @@ html {
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
-    /* Highest possible z-index to avoid being covered by chrome/topbar */
-    z-index: 2147483647;
+    /* Sit just below the topbar so they appear glued together */
+    z-index: 2147483646;
     transition: opacity 220ms ease;
     opacity: 1;
 }
