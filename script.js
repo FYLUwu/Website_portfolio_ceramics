@@ -18,6 +18,9 @@ const DOM = {
     menuOverlay: document.getElementById('menu-overlay'),
     menuClose: document.getElementById('menu-close'),
 
+    // Topbar brand (click to go to top)
+    brand: document.querySelector('.topbar__brand'),
+
     // Navigation button
     galleryButton: document.getElementById('gallery-btn'),
     gallerySection: document.getElementById('gallery'),
@@ -54,6 +57,21 @@ function smoothScroll(element) {
  */
 function elementExists(element) {
     return element !== null && element !== undefined;
+}
+
+/**
+ * Safe focus helper
+ * Uses the `preventScroll` option when available to avoid moving the layout
+ * unexpectedly when shifting focus programmatically.
+ */
+function safeFocus(el, options = { preventScroll: true }) {
+    if (!el || typeof el.focus !== 'function') return;
+    try {
+        // some browsers may not support the options parameter
+        el.focus(options);
+    } catch (err) {
+        try { el.focus(); } catch (e) {}
+    }
 }
 
 /* ============================================
@@ -147,7 +165,7 @@ function openMenu() {
     disableBodyScroll();
 
     if (elementExists(DOM.menuClose)) {
-        DOM.menuClose.focus();
+        safeFocus(DOM.menuClose);
     }
     // ensure menu-panel is positioned relative to the visible viewport (mobile browsers)
     // update CSS vh variable first so CSS-based sizes match the visible viewport
@@ -167,7 +185,7 @@ function closeMenu() {
     if (elementExists(DOM.menuToggle)) {
         DOM.menuToggle.setAttribute('aria-expanded', 'false');
         DOM.menuToggle.classList.remove('is-open');
-        DOM.menuToggle.focus();
+        safeFocus(DOM.menuToggle);
     }
 
     enableBodyScroll();
@@ -299,6 +317,26 @@ function initializeNavigation() {
     if (elementExists(DOM.galleryButton) && elementExists(DOM.gallerySection)) {
         DOM.galleryButton.addEventListener('click', () => {
             smoothScroll(DOM.gallerySection);
+        });
+    }
+
+    // Make topbar brand act as "go to top" (click and keyboard)
+    if (elementExists(DOM.brand)) {
+        // ensure it's keyboard focusable
+        if (!DOM.brand.hasAttribute('tabindex')) DOM.brand.setAttribute('tabindex', '0');
+        if (!DOM.brand.hasAttribute('role')) DOM.brand.setAttribute('role', 'button');
+        DOM.brand.style.cursor = 'pointer';
+
+        DOM.brand.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        DOM.brand.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     }
 }
@@ -455,7 +493,7 @@ function activateFocusTrap() {
     if (!panel) return;
     _previouslyFocused = document.activeElement;
     _focusableElements = _getFocusable(panel);
-    if (_focusableElements.length) _focusableElements[0].focus();
+    if (_focusableElements.length) safeFocus(_focusableElements[0]);
     _focusTrapListener = _onTrapKey;
     document.addEventListener('keydown', _focusTrapListener);
 
@@ -471,7 +509,7 @@ function deactivateFocusTrap() {
         _focusTrapListener = null;
     }
     if (_previouslyFocused && typeof _previouslyFocused.focus === 'function') {
-        _previouslyFocused.focus();
+        safeFocus(_previouslyFocused);
     }
     // remove overlay touchmove handler
     if (DOM.menuOverlay) {
