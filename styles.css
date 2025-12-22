@@ -556,8 +556,27 @@ html {
         right: 12px;
     }
 
+    /* On very small screens (phones) convert the menu into a bottom sheet
+       that sits above the browser chrome and respects the safe-area inset
+       (useful for iPhone/Chrome/Safari where the bottom toolbar is present). */
     .menu-panel {
         width: 100%;
-        padding: var(--spacing-lg) var(--spacing-sm);
+        left: 0;
+        right: 0;
+        top: auto;
+        bottom: env(safe-area-inset-bottom, 0);
+        padding: var(--spacing-lg) calc(var(--spacing-sm) + env(safe-area-inset-left, 0)) calc(var(--spacing-lg) + env(safe-area-inset-bottom, 0)) calc(var(--spacing-sm) + env(safe-area-inset-right, 0));
+        border-radius: 12px 12px 0 0;
+        /* slide up from bottom */
+        transform: translateY(100%);
+        opacity: 0;
+        transition: transform var(--transition-menu), opacity 260ms ease;
+        position: fixed;
+    }
+
+    /* When open, bring bottom sheet into view */
+    .menu-overlay.show .menu-panel {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
