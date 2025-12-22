@@ -417,7 +417,8 @@ html {
 .menu-panel {
     width: 320px;
     max-width: 92vw;
-    height: 100vh;
+    /* Use dynamic viewport height to adapt when browser chrome shows/hides */
+    height: calc(var(--vh, 1vh) * 100);
     padding: var(--spacing-xl) var(--spacing-lg);
     color: white;
     background: transparent;
@@ -428,6 +429,8 @@ html {
     transform: translateX(0%);
     opacity: 0;
     transition: transform var(--transition-menu), opacity 320ms ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .menu-overlay.show .menu-panel {
@@ -436,34 +439,6 @@ html {
 }
 
 .menu-close {
-    /* Improve touch behavior & accessibility on mobile */
-    .menu-panel {
-        /* smooth scrolling inside the panel */
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        /* Use dynamic --vh so when browser chrome toggles the panel height adjusts correctly */
-        max-height: calc((var(--vh, 1vh) * 100) - 56px);
-    }
-
-    .menu-link {
-        /* larger tap target */
-        padding: 12px 8px;
-        display: flex;
-        align-items: center;
-    }
-
-    .button, .menu-close, .menu-link, .social-link {
-        touch-action: manipulation;
-        -webkit-tap-highlight-color: rgba(0,0,0,0.08);
-    }
-
-    /* Prevent background overscroll when overlays are open */
-    .menu-overlay, .image-overlay, .access-overlay {
-        overscroll-behavior: contain;
-    }
-
-    /* Ensure minimum touch target size */
-    .button { min-height: 44px; padding-top: 8px; padding-bottom: 8px; }
     position: absolute;
     right: var(--spacing-sm);
     top: var(--spacing-sm);
@@ -498,6 +473,25 @@ html {
     gap: var(--spacing-md);
     align-items: center;
 }
+
+/* Larger tap targets for links inside menu */
+.menu-link {
+    padding: 12px 8px;
+}
+
+/* Touch and tap optimizations */
+.button, .menu-close, .menu-link, .social-link {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(0,0,0,0.08);
+}
+
+/* Prevent background overscroll when overlays are open */
+.menu-overlay, .image-overlay, .access-overlay {
+    overscroll-behavior: contain;
+}
+
+/* Ensure minimum touch target size */
+.button { min-height: 44px; padding-top: 8px; padding-bottom: 8px; }
 
 .menu-link:hover,
 .menu-link:focus {
@@ -602,6 +596,8 @@ html {
         opacity: 0;
         transition: transform var(--transition-menu), opacity 260ms ease;
         position: fixed;
+        /* keep bottom sheet within the visible viewport */
+        max-height: calc((var(--vh, 1vh) * 100) - 56px);
     }
 
     /* When open, bring bottom sheet into view */
